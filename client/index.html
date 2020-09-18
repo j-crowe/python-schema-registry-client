@@ -334,13 +334,6 @@
     Methods
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods_2" class="md-nav__link">
-    Methods
-  </a>
-  
     <nav class="md-nav" aria-label="Methods">
       <ul class="md-nav__list">
         
@@ -627,13 +620,6 @@
     Methods
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods_2" class="md-nav__link">
-    Methods
-  </a>
-  
     <nav class="md-nav" aria-label="Methods">
       <ul class="md-nav__list">
         
@@ -804,7 +790,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
-<span class="sd">        avro_schema (avro.schema.RecordSchema): Avro schema to be registered</span>
+<span class="sd">        avro_schema typing.Union[avro.schema.AvroSchema, str]: Avro schema to be registered</span>
 <span class="sd">        headers (dict): Extra headers to add on the requests</span>
 <span class="sd">        timeout (httpx._client.TimeoutTypes): The timeout configuration to use when sending requests. Default UNSET</span>
 
@@ -850,7 +836,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
-<span class="sd">        avro_schema (avro.schema.RecordSchema): Avro schema</span>
+<span class="sd">        avro_schema typing.Union[avro.schema.AvroSchema, str]: Avro schema to be registered</span>
 <span class="sd">        headers (dict): Extra headers to add on the requests</span>
 <span class="sd">        timeout (httpx._client.TimeoutTypes): The timeout configuration to use when sending requests. Default UNSET</span>
 
@@ -917,7 +903,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
-<span class="sd">        avro_schema (avro.schema.RecordSchema): Avro schema parsed</span>
+<span class="sd">        avro_schema typing.Union[avro.schema.AvroSchema, str]: Avro schema to be registered</span>
 <span class="sd">        headers (dict): Extra headers to add on the requests</span>
 <span class="sd">        timeout (httpx._client.TimeoutTypes): The timeout configuration to use when sending requests. Default UNSET</span>
 
@@ -985,10 +971,9 @@
 
 
 <h2 id="methods_1">Methods</h2>
-<h2 id="methods_2">Methods</h2>
 <h3 id="get-schema_1">Get Schema</h3>
 <p>Get Schema for a given version. If version is <code>None</code>, try to resolve the latest schema</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;latest&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">TimeoutTypes</span><span class="p">,</span> <span class="n">UnsetType</span><span class="p">]</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">utils</span><span class="o">.</span><span class="n">SchemaVersion</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;latest&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">TimeoutTypes</span><span class="p">,</span> <span class="n">UnsetType</span><span class="p">]</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">utils</span><span class="o">.</span><span class="n">SchemaVersion</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
@@ -1008,7 +993,7 @@
 
 
 <h3 id="get-schema-by-id_1">Get schema by <code>id</code></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="n">schema_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">TimeoutTypes</span><span class="p">,</span> <span class="n">UnsetType</span><span class="p">]</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">AvroSchema</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="n">schema_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">TimeoutTypes</span><span class="p">,</span> <span class="n">UnsetType</span><span class="p">]</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">AvroSchema</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        schema_id (int): Schema Id</span>
@@ -1026,7 +1011,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
-<span class="sd">        avro_schema (avro.schema.RecordSchema): Avro schema to be registered</span>
+<span class="sd">        avro_schema typing.Union[avro.schema.AvroSchema, str]: Avro schema to be registered</span>
 <span class="sd">        headers (dict): Extra headers to add on the requests</span>
 <span class="sd">        timeout (httpx._client.TimeoutTypes): The timeout configuration to use when sending requests. Default UNSET</span>
 
@@ -1072,7 +1057,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
-<span class="sd">        avro_schema (avro.schema.RecordSchema): Avro schema</span>
+<span class="sd">        avro_schema typing.Union[avro.schema.AvroSchema, str]: Avro schema to be registered</span>
 <span class="sd">        headers (dict): Extra headers to add on the requests</span>
 <span class="sd">        timeout (httpx._client.TimeoutTypes): The timeout configuration to use when sending requests. Default UNSET</span>
 
@@ -1139,7 +1124,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        subject (str): subject name</span>
-<span class="sd">        avro_schema (avro.schema.RecordSchema): Avro schema parsed</span>
+<span class="sd">        avro_schema typing.Union[avro.schema.AvroSchema, str]: Avro schema to be registered</span>
 <span class="sd">        headers (dict): Extra headers to add on the requests</span>
 <span class="sd">        timeout (httpx._client.TimeoutTypes): The timeout configuration to use when sending requests. Default UNSET</span>
 
