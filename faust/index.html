@@ -254,6 +254,19 @@
     Avro Schemas, Custom Codecs and Serializers
   </a>
   
+    <nav class="md-nav" aria-label="Avro Schemas, Custom Codecs and Serializers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usage-with-dataclasses-avroschema" class="md-nav__link">
+    Usage with dataclasses-avroschema
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -329,6 +342,19 @@
     Avro Schemas, Custom Codecs and Serializers
   </a>
   
+    <nav class="md-nav" aria-label="Avro Schemas, Custom Codecs and Serializers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usage-with-dataclasses-avroschema" class="md-nav__link">
+    Usage with dataclasses-avroschema
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -392,7 +418,6 @@ Avro is used to define the data schema for a record's value. This schema describ
 
 <span class="n">avro_user_serializer</span> <span class="o">=</span> <span class="n">FaustSerializer</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="n">avro_user_schema</span><span class="p">)</span>
 
-
 <span class="c1"># function used to register the codec</span>
 <span class="k">def</span> <span class="nf">avro_user_codec</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">avro_user_serializer</span>
@@ -401,7 +426,6 @@ Avro is used to define the data schema for a record's value. This schema describ
 
 <p>and ddd in <code>setup.py</code> the folloing code in order to tell faust where to find the custom codecs.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># setup.py</span>
-
 <span class="n">setup</span><span class="p">(</span>
     <span class="o">...</span>
     <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
@@ -418,6 +442,8 @@ Avro is used to define the data schema for a record's value. This schema describ
 
 <p>Now the final step is to integrate the faust model with the AvroSerializer.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># users.models</span>
+<span class="kn">import</span> <span class="nn">faust</span>
+
 
 <span class="k">class</span> <span class="nc">UserModel</span><span class="p">(</span><span class="n">faust</span><span class="o">.</span><span class="n">Record</span><span class="p">,</span> <span class="n">serializer</span><span class="o">=</span><span class="s1">&#39;avro_users&#39;</span><span class="p">):</span>
     <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
@@ -453,6 +479,35 @@ Avro is used to define the data schema for a record's value. This schema describ
 
 
 <p>The full example is <a href="https://github.com/marcosschroh/faust-docker-compose-example/blob/master/faust-project/example/codecs/avro.py">here</a></p>
+<h3 id="usage-with-dataclasses-avroschema">Usage with dataclasses-avroschema</h3>
+<p>You can also use this funcionality with <a href="https://github.com/marcosschroh/dataclasses-avroschema">dataclasses-avroschema</a> and you won't have to provide the avro schema.
+The only thing that you need to do is add the <code>AvroModel</code> class and use its methods:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># users.models</span>
+<span class="kn">import</span> <span class="nn">faust</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses_avroschema</span> <span class="kn">import</span> <span class="n">AvroModel</span>
+
+
+<span class="k">class</span> <span class="nc">UserModel</span><span class="p">(</span><span class="n">faust</span><span class="o">.</span><span class="n">Record</span><span class="p">,</span> <span class="n">AvroModel</span><span class="p">,</span> <span class="n">serializer</span><span class="o">=</span><span class="s1">&#39;avro_users&#39;</span><span class="p">):</span>  
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="c1"># codecs.codec.py</span>
+<span class="kn">from</span> <span class="nn">schema_registry.client</span> <span class="kn">import</span> <span class="n">SchemaRegistryClient</span><span class="p">,</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">schema_registry.serializers</span> <span class="kn">import</span> <span class="n">FaustSerializer</span>
+
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">UserModel</span>
+
+<span class="c1"># create an instance of the `SchemaRegistryClient`</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SchemaRegistryClient</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">SCHEMA_REGISTRY_URL</span><span class="p">)</span>
+
+<span class="n">avro_user_serializer</span> <span class="o">=</span> <span class="n">FaustSerializer</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="n">UserModel</span><span class="o">.</span><span class="n">avro_schema</span><span class="p">())</span>  <span class="c1"># usign the method avro_schema to get the avro schema representation</span>
+
+<span class="c1"># function used to register the codec</span>
+<span class="k">def</span> <span class="nf">avro_user_codec</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">avro_user_serializer</span>
+</code></pre></div>
                 
               
               
