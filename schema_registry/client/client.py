@@ -368,6 +368,11 @@ class SchemaRegistryClient(BaseClient):
             self._cache_schema(result, schema_id)
             return result
 
+        print("------------------------------------------------------------")
+        print(code)
+        print(result)
+        print("------------------------------------------------------------")
+
         raise ClientError(f"Received bad schema (id {schema_id})", http_code=code, server_traceback=result)
 
     def get_schema(
